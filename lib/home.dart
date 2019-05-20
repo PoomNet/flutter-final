@@ -76,7 +76,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                   Text(CurrentUser.NAME),
                   Text(CurrentUser.AGE),
                   RaisedButton(
-                      child: Text("Login"),
+                      child: Text("profile setup"),
                       onPressed: () {
                         Navigator.push(
                             context,

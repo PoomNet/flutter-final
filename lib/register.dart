@@ -110,7 +110,7 @@ class RegisterPageState extends State<RegisterPage> {
                           if(fkey.currentState.validate()){
                             await dataAccess.open();
 
-                            ProfileItem data = ProfileItem();
+                            ProfileItem data = ProfileItem();//สร้างไว้สร้างข้อมูลใหม่ไม่ต้องมีidจะสร้างให้เอง
                             data.user = userController.text;
                             data.name = nameController.text;
                             data.age = ageController.text;

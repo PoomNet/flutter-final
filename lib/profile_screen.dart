@@ -47,7 +47,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                       TextFormField(
                         decoration: InputDecoration(
                             icon: Icon(Icons.account_circle),
-                            hintText: 'Please Enter Username'),
+                            hintText: CurrentUser.USER),//โชของเดิม
                         controller: userController,
                         validator: (value) {
                           if (value.length < 6) {
@@ -119,17 +119,12 @@ class ProfileScreenState extends State<ProfileScreen> {
                             if (fkey.currentState.validate()) {
                               await dataAccess.open();
 
-                              ProfileItem data = ProfileItem();
+                              ProfileItem data = ProfileItem(); //สร้างไว้updateค่า ต้องมีid
                               data.id = CurrentUser.USERID;
                               data.user = userController.text;
                               data.name = nameController.text;
                               data.age = ageController.text;
                               data.pass = passController.text;
-
-                              print(userController.text);
-                              print(nameController.text);
-                              print(int.parse(ageController.text));
-                              print(passController.text);
 
                               userController.text = '';
                               nameController.text = '';
