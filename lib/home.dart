@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'json.dart';
 import 'login.dart';
 import 'profile_screen.dart';
@@ -20,6 +21,8 @@ class TodoListScreen extends StatefulWidget {
 }
 
 class _TodoListScreenState extends State<TodoListScreen> {
+  var username = "";
+  var name = "";
   Future<List<ProfileItem>> _todoItems;
   List<ProfileItem> _completeItems = List();
   DataAccess _dataAccess = DataAccess();
@@ -43,15 +46,16 @@ class _TodoListScreenState extends State<TodoListScreen> {
   }
 
   Future loadData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      username = prefs.getString('username') ?? '';
+      name = prefs.getString('name') ?? '';
+    });
     var url = 'http://example.com/whatsit/create';
     var response =
         await http.post(url, body: {'name': 'doodle', 'color': 'blue'});
     http.Response resp = await http.get(url);
     Map<String, dynamic> data = json.decode(resp.body);
-    print(1);
-    print(data);
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
   }
 
   @override
@@ -69,6 +73,12 @@ class _TodoListScreenState extends State<TodoListScreen> {
         ),
         body: ListView(
           children: <Widget>[
+            Container(
+              height: 200,
+              child: Column(
+                children: <Widget>[Text("Hello $name")],
+              ),
+            ),
             Container(
               height: 500,
               child: Column(

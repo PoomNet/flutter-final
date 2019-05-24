@@ -3,6 +3,7 @@ import 'profile.dart';
 import 'sqlprofile.dart';
 import 'register.dart';
 import 'home.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Loginpage extends StatefulWidget {
   @override
@@ -19,7 +20,7 @@ class Loginstate extends State<Loginpage> {
   Future<List<ProfileItem>> alluser;
   final GlobalKey<ScaffoldState> _scafkey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
-  CurrentUser currentUser ;
+  CurrentUser currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -35,57 +36,58 @@ class Loginstate extends State<Loginpage> {
                 Image.asset("image/1.jpg", width: 300),
                 TextFormField(
                   decoration: InputDecoration(
-                      icon: Icon(Icons.account_circle),
-                      hintText: 'User ID'),
+                      icon: Icon(Icons.account_circle), hintText: 'User ID'),
                   controller: userController,
-                  validator: (value) {
-                  },
+                  validator: (value) {},
                   keyboardType: TextInputType.text,
                   onSaved: (value) => print(value),
                 ),
                 TextFormField(
                   decoration: InputDecoration(
-                      icon: Icon(Icons.lock),
-                      hintText: 'Password'),
+                      icon: Icon(Icons.lock), hintText: 'Password'),
                   controller: passController,
-                  validator: (value) {
-                  },
+                  validator: (value) {},
                   obscureText: true,
                   keyboardType: TextInputType.text,
                   onSaved: (value) => print(value),
                 ),
                 RaisedButton(
                     child: Text("Login"),
-                    onPressed: () async{
+                    onPressed: () async {
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
                       _dataAccess.open();
-                      int check = 0,i=0;
+                      int check = 0, i = 0;
                       alluser = _dataAccess.getAllUser();
 
                       var user = await alluser;
-                      for(i=0;i<user.length;i++){
+                      for (i = 0; i < user.length; i++) {
                         print(user[i].user);
-                        if(user[i].user==userController.text && user[i].pass==passController.text){
-                          check +=1;
+                        if (user[i].user == userController.text &&
+                            user[i].pass == passController.text) {
+                          check += 1;
                           break;
                         }
                       }
                       print(check);
                       _formKey.currentState.validate();
-                      if(userController.text == "" || passController.text == ""){
+                      if (userController.text == "" ||
+                          passController.text == "") {
                         _scafkey.currentState.showSnackBar(SnackBar(
                           content: Text('กรุณา ระบุ user or password'),
                           duration: Duration(seconds: 3),
                           backgroundColor: Colors.red,
                         ));
-                      }
-                      else if(check!=1){
+                      } else if (check != 1) {
                         _scafkey.currentState.showSnackBar(SnackBar(
                           content: Text('user or passwordผผิด'),
                           duration: Duration(seconds: 3),
                           backgroundColor: Colors.red,
                         ));
-                      }
-                      else {
+                      } else {
+                        // final myString = prefs.getString('my_string_key') ?? '';
+                        prefs.setString('username', user[i].user);
+                        prefs.setString('name', user[i].name);
                         userController.text = "";
                         passController.text = "";
                         CurrentUser.USERID = user[i].id;
@@ -97,8 +99,7 @@ class Loginstate extends State<Loginpage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => TodoListScreen()));
-                      } 
-                      
+                      }
                     }),
                 Align(
                     alignment: Alignment.bottomRight,

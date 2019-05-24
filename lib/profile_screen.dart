@@ -63,7 +63,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                       TextFormField(
                         decoration: InputDecoration(
                             icon: Icon(Icons.lock),
-                            hintText: 'Please Enter Name'),
+                            hintText: CurrentUser.NAME),
                         controller: nameController,
                         validator: (value) {
                           int check = 0;

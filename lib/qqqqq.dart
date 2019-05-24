@@ -14,7 +14,7 @@ import 'package:path_provider/path_provider.dart';
 //   );
 // }
 
-class CounterStorage {
+class CounterStorage {//ต้องส่ง storage: CounterStorage() สำคัญมากๆๆๆๆๆๆๆๆๆ
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
 
@@ -26,25 +26,24 @@ class CounterStorage {
     return File('$path/counter.txt');
   }
 
-  Future<int> readCounter() async {
+  Future<String> readCounter() async {
     try {
+      print(888);
       final file = await _localFile;
 
       // Read the file
-      print(111111111111);
-      print(file.readAsStringSync());
       String contents = await file.readAsString();
-      print(111111111111);
       print(contents);
 
-      return int.parse(contents);
+      return contents;
     } catch (e) {
+      print(9999);
       // If encountering an error, return 0
-      return 0;
+      return "";
     }
   }
 
-  Future<File> writeCounter(int counter) async {
+  Future<File> writeCounter(String counter) async {
     final file = await _localFile;
 
     // Write the file
@@ -62,12 +61,13 @@ class FlutterDemo extends StatefulWidget {
 }
 
 class _FlutterDemoState extends State<FlutterDemo> {
-  int _counter;
+  String _counter="111";
 
   @override
   void initState() {
     super.initState();
-    widget.storage.readCounter().then((int value) {
+    print(11111);
+    widget.storage.readCounter().then((String value) {
       setState(() {
         _counter = value;
       });
@@ -76,7 +76,7 @@ class _FlutterDemoState extends State<FlutterDemo> {
 
   Future<File> _incrementCounter() {
     setState(() {
-      _counter++;
+      _counter = "aaaaa";
     });
 
     // Write the variable as a string to the file.
@@ -89,7 +89,7 @@ class _FlutterDemoState extends State<FlutterDemo> {
       appBar: AppBar(title: Text('Reading and Writing Files')),
       body: Center(
         child: Text(
-          'Button tapped $_counter time${_counter <= 1 ? '' : 's'}.',
+          _counter,
         ),
       ),
       floatingActionButton: FloatingActionButton(
